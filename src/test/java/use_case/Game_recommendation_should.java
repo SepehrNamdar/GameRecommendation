@@ -7,11 +7,13 @@ import domain.Recommendation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static domain.Gender.*;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class NewlyCreatedPlayerShould {
+public class Game_recommendation_should {
 
     public static final String ACTION_GAME_1 = "action_game_1";
     public static final String ACTION_GAME_2 = "action_game_2";
@@ -27,14 +29,28 @@ public class NewlyCreatedPlayerShould {
     }
 
     @Test
-    void get_default_recommendation() {
-        Player player = new Player("Mahsa");
-
+    void sort_games_by_notes() {
+        Player player = new Player("Mahsa", List.of());
         RecommendGames recommendGames = new RecommendGames(player, games);
+
         Recommendation recommendation = recommendGames.getRecommendations();
 
         Recommendation expectedRecommendation = new Recommendation();
         expectedRecommendation.put(ACTION, asList(ACTION_GAME_1, ACTION_GAME_2));
+        expectedRecommendation.put(STRATEGY, asList(STRATEGY_GAME_1, STRATEGY_GAME_2));
+        expectedRecommendation.put(ADVENTURE, asList(ADVENTURE_GAME_2, ADVENTURE_GAME_1));
+        assertThat(recommendation).isEqualTo(expectedRecommendation);
+    }
+
+    @Test
+    void not_contains_games_played_by_the_player() {
+        Player player = new Player("Mahsa", List.of(ACTION_GAME_1));
+        RecommendGames recommendGames = new RecommendGames(player, games);
+
+        Recommendation recommendation = recommendGames.getRecommendations();
+
+        Recommendation expectedRecommendation = new Recommendation();
+        expectedRecommendation.put(ACTION, List.of(ACTION_GAME_2));
         expectedRecommendation.put(STRATEGY, asList(STRATEGY_GAME_1, STRATEGY_GAME_2));
         expectedRecommendation.put(ADVENTURE, asList(ADVENTURE_GAME_2, ADVENTURE_GAME_1));
         assertThat(recommendation).isEqualTo(expectedRecommendation);

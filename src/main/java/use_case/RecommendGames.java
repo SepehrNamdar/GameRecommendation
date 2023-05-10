@@ -30,12 +30,14 @@ public class RecommendGames {
         List<String> adventureGames = new LinkedList<>();
         Recommendation recommendation = new Recommendation();
         for (Game game : allGames) {
-            if (game.getGender() == ACTION) {
-                actionGames.add(game.getName());
-            } else if (game.getGender() == STRATEGY) {
-                strategyGames.add(game.getName());
-            } else {
-                adventureGames.add(game.getName());
+            if (player.hasNotPlayed(game)) {
+                if (game.getGender() == ACTION) {
+                    actionGames.add(game.getName());
+                } else if (game.getGender() == STRATEGY) {
+                    strategyGames.add(game.getName());
+                } else {
+                    adventureGames.add(game.getName());
+                }
             }
         }
         recommendation.put(ACTION, actionGames);
