@@ -15,4 +15,8 @@ public class Player {
     public boolean hasNotPlayed(Game game) {
         return !playedGames.contains(game.getName());
     }
+
+    public List<String> getPlayedGames() {
+        return playedGames;
+    }
 }
